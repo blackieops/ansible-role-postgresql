@@ -1,0 +1,8 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+  vars:
+    pg_locale: C.UTF-8
+  roles:
+    - role: blackieops.postgresql

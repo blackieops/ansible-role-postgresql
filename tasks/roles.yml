@@ -1,0 +1,28 @@
+---
+
+- name: Execute as postgres user
+  become: true
+  become_user: postgres
+  tags:
+    - postgresql
+  block:
+    - name: Add PostgresQL databases
+      community.postgresql.postgresql_db:
+        name: "{{ item }}"
+      with_items: "{{ pg_databases }}"
+
+    - name: Add PostgreSQL user roles
+      community.postgresql.postgresql_user:
+        name: "{{ item.name }}"
+        state: present
+        role_attr_flags: "{{ item.flags }}"
+      with_items: "{{ pg_roles }}"
+
+    - name: Set permissions for roles on databases
+      community.postgresql.postgresql_privs:
+        database: "{{ item.db }}"
+        state: present
+        privs: "{{ item.privs }}"
+        type: database
+        role: "{{ item.role }}"
+      with_items: "{{ pg_role_privs }}"

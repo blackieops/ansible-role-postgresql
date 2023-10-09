@@ -1,0 +1,11 @@
+---
+exclude_paths:
+  # Ignore non-ansible yaml
+  - .github/
+
+  # Ignore molecule tests
+  - molecule/
+
+skip_list:
+  # dumb
+  - yaml[line-length]

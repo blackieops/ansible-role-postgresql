@@ -1,0 +1,15 @@
+---
+- name: Install PostgreSQL Server
+  ansible.builtin.package:
+    name:
+      - postgresql
+      - postgresql-server
+      - python3-psycopg2
+    state: present
+  tags:
+    - postgresql
+
+- name: Initialize PostgreSQL data directory
+  ansible.builtin.command: postgresql-setup --initdb
+  args:
+    creates: "{{ pg_data_dir }}/pg_wal"

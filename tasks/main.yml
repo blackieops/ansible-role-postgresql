@@ -1,0 +1,47 @@
+---
+- name: Load OS-specific variable overrides
+  ansible.builtin.include_vars: "{{ ansible_facts['os_family'] }}.yml"
+
+- name: Set up PostgreSQL
+  ansible.builtin.include_tasks: install_{{ ansible_facts["os_family"] }}.yml
+
+- name: Set up PostgreSQL PKI
+  ansible.builtin.import_tasks: pki.yml
+
+- name: Create PostgreSQL run directory
+  ansible.builtin.file:
+    path: "{{ pg_pid_dir }}"
+    mode: "0755"
+  tags:
+    - postgresql
+
+- name: Configure PostgreSQL
+  ansible.builtin.template:
+    src: postgresql.conf
+    dest: "{{ pg_conf_dir }}/postgresql.conf"
+    mode: "0644"
+  notify:
+    - Restart postgresql
+  tags:
+    - postgresql
+
+- name: Configure PostgreSQL authentication
+  ansible.builtin.template:
+    src: pg_hba.conf
+    dest: "{{ pg_conf_dir }}/pg_hba.conf"
+    mode: "0644"
+  notify:
+    - Restart postgresql
+  tags:
+    - postgresql
+
+- name: Enable and start PostgreSQL
+  ansible.builtin.service:
+    name: "{{ pg_service_name }}"
+    state: started
+    enabled: true
+  tags:
+    - postgresql
+
+- name: Set up PosgreSQL roles
+  ansible.builtin.import_tasks: roles.yml

@@ -1,0 +1,31 @@
+---
+- name: Make PKI directories for PostgreSQL
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0755"
+  with_items:
+    - "{{ pg_pki_dir }}"
+    - "{{ pg_pki_dir }}/csr"
+    - "{{ pg_pki_dir }}/key"
+    - "{{ pg_pki_dir }}/crt"
+  tags:
+    - postgresql
+
+- name: Bootstrap CA
+  ansible.builtin.shell: >
+    openssl req -new -x509 -days 3650 -nodes
+    -out ca.crt -keyout ca.key
+    -addext "subjectAltName = DNS:{{ pg_hostname }}-$(date +%Y)"
+    -subj "/CN={{ pg_hostname }}-$(date +%Y)"
+  args:
+    chdir: "{{ pg_pki_dir }}"
+    creates: "{{ pg_pki_dir }}/ca.key"
+  tags:
+    - postgresql
+
+- name: Generate client certs
+  ansible.builtin.include_tasks: pki-client.yml
+  with_items:
+    - { name: "{{ pg_hostname }}" }
+    - "{{ pg_roles }}"

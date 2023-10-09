@@ -1,0 +1,19 @@
+---
+dependencies: []
+
+galaxy_info:
+  role_name: postgresql
+  author: blackieops
+  description: Installs and manages a PostgreSQL server.
+  min_ansible_version: "2.3"
+  license: "license (BSD, MIT)"
+  platforms:
+    - name: EL
+      versions: [9]
+    - name: Debian
+      versions: [bookworm]
+    - name: Ubuntu
+      versions: [jammy]
+  galaxy_tags:
+    - database
+    - postgresql

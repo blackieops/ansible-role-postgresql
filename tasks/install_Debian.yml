@@ -1,0 +1,33 @@
+---
+- name: Install gnupg for apt signing keys
+  ansible.builtin.package:
+    name: gnupg
+    state: present
+  tags:
+    - postgresql
+
+- name: Add PostgreSQL repo signing key
+  ansible.builtin.apt_key:
+    url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
+    state: present
+  tags:
+    - postgresql
+
+- name: Add PostgreSQL repository
+  ansible.builtin.apt_repository:
+    repo: deb http://apt.postgresql.org/pub/repos/apt/ {{ ansible_distribution_release }}-pgdg main
+    state: present
+    update_cache: true
+  tags:
+    - postgresql
+
+- name: Install PostgreSQL
+  ansible.builtin.apt:
+    name:
+      - postgresql-client-{{ pg_version }}
+      - postgresql-{{ pg_version }}
+      - postgresql-server-dev-{{ pg_version }}
+      - libpq-dev
+      - python3-psycopg2
+  tags:
+    - postgresql

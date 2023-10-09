@@ -1,0 +1,20 @@
+---
+- name: Generate private key and csr
+  ansible.builtin.shell: >
+    /bin/bash -c 'openssl req -new -nodes -out csr/{{ item.name }}.csr -keyout key/{{ item.name }}.key -addext "subjectAltName = DNS:{{ item.name }}" -subj "/CN={{
+    item.name }}" && chown {{ pg_user }}:{{ pg_group }} key/{{ item.name }}.key'
+  args:
+    chdir: "{{ pg_pki_dir }}"
+    creates: "{{ pg_pki_dir }}/key/{{ item.name }}.key"
+  tags:
+    - postgresql
+
+- name: Generate certificate
+  ansible.builtin.shell: >
+    /bin/bash -c 'openssl x509 -req -in csr/{{ item.name }}.csr -extfile <(printf "subjectAltName=DNS:{{ item.name }}") -days 1825 -CA ca.crt -CAkey ca.key -CAcreateserial
+    -out crt/{{ item.name }}.crt && chown {{ pg_user }}:{{ pg_group }} crt/{{ item.name }}.crt'
+  args:
+    chdir: "{{ pg_pki_dir }}"
+    creates: "{{ pg_pki_dir }}/crt/{{ item.name }}.crt"
+  tags:
+    - postgresql

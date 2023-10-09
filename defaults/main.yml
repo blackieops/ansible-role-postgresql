@@ -1,0 +1,44 @@
+---
+pg_version: 15
+
+pg_pki_dir: "{{ pg_conf_dir }}/pki"
+
+pg_user: postgres
+pg_group: postgres
+
+pg_locale: en_US.UTF-8
+
+pg_external: false
+pg_hostname: pg-primary.internal
+pg_listen_address: "*"
+pg_port: 5432
+pg_max_connections: 1024
+pg_superuser_reserved_connections: 2
+pg_pid_dir: /var/run/postgresql
+pg_pid_file_path: "{{ pg_pid_dir }}/{{ pg_version }}-main.pid"
+
+pg_auth_timeout: 1s
+pg_password_encryption: scram-sha-256
+pg_auth_local_method: scram-sha-256
+pg_auth_remote_method: cert
+pg_auth_remote_ipv4: "0.0.0.0/0"
+pg_auth_remote_ipv6: ::0/0
+
+pg_wal_level: replica
+
+pg_shared_buffer_size: 128MB
+
+# Example:
+# - mydb
+pg_databases: []
+
+# Example:
+# - name: alex
+#   flags: NOSUPERUSER
+pg_roles: []
+
+# Example:
+# - db: mydb
+#   role: alex
+#   privs: ALL
+pg_role_privs: []
