@@ -44,7 +44,7 @@ your `requirements.yml`:
 
 ```yaml
 # via Galaxy
-- src: blackieops.postgresql
+- role: blackieops.postgresql
 
 # or via Git
 - src: https://github.com/blackieops/ansible-role-postgresql.git
