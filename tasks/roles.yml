@@ -2,7 +2,7 @@
 
 - name: Execute as postgres user
   become: true
-  become_user: postgres
+  become_user: "{{ pg_user }}"
   tags:
     - postgresql
   block:
