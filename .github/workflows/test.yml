@@ -17,9 +17,9 @@ jobs:
     strategy:
       matrix:
         distro:
-          - rockylinux9
-          - ubuntu2204
-          - debian12
+          - geerlingguy/docker-rockylinux9-ansible:latest
+          - geerlingguy/docker-debian12-ansible:latest
+          - geerlingguy/docker-ubuntu2204-ansible:latest
 
     steps:
       - uses: actions/checkout@v3
