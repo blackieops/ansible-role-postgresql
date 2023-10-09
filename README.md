@@ -1,5 +1,7 @@
 # PostgreSQL Server Ansible Role
 
+[![Molecule Tests](https://github.com/blackieops/ansible-role-postgresql/actions/workflows/test.yml/badge.svg)](https://github.com/blackieops/ansible-role-postgresql/actions/workflows/test.yml)
+
 This is an [Ansible] role that deploys a production-ready PostgreSQL server
 with full support for certificate-based authentication and `verify-full`
 connections.
