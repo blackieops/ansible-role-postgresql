@@ -20,6 +20,7 @@ jobs:
           - geerlingguy/docker-rockylinux9-ansible:latest
           - geerlingguy/docker-debian12-ansible:latest
           - geerlingguy/docker-ubuntu2204-ansible:latest
+          - ghcr.io/blackieops/docker-sles15-ansible:latest
 
     steps:
       - uses: actions/checkout@v3

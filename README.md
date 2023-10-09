@@ -29,6 +29,7 @@ for your target.
 
 We target the following platforms:
 
+* SUSE Enterprise Linux Server
 * Enterprise Linux (RHEL-derived)
 * Ubuntu (LTS)
 * Debian (Stable)

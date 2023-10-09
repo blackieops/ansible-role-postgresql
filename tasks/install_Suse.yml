@@ -1,0 +1,28 @@
+---
+- name: Install PostgreSQL Server
+  ansible.builtin.package:
+    name:
+      - postgresql
+      - postgresql-server
+      - python3-psycopg2
+    state: present
+  tags:
+    - postgresql
+
+- name: Configure PostgreSQL datadir in sysconfig
+  ansible.builtin.lineinfile:
+    path: /etc/sysconfig/postgresql
+    line: POSTGRES_DATADIR="{{ pg_data_dir }}"
+    state: present
+    regexp: POSTGRES_DATADIR
+  tags:
+    - postgresql
+
+- name: Initialize PostgreSQL data directory
+  become: true
+  become_user: "{{ pg_user }}"
+  ansible.builtin.command: initdb -D {{ pg_data_dir }}
+  args:
+    creates: "{{ pg_data_dir }}/pg_wal"
+  tags:
+    - postgresql
